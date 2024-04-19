@@ -1,7 +1,10 @@
 import express from "express";
-
+import cors from "cors";
 const app = express();
 const port = 8000;
+
+app.use(cors());
+app.use(express.json());
 
 const users = {
     users_list: [
@@ -33,8 +36,10 @@ const users = {
     ]
   };
 
-  const findUserById = (id) =>
+const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
+
+
 
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
@@ -45,8 +50,6 @@ app.get("/users/:id", (req, res) => {
     res.send(result);
   }
 });
-
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
