@@ -71,7 +71,27 @@ const addUser = (user) => {
   };
   
 app.post("/users", (req, res) => {
-    const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send();
+    const userToAdd = {
+      id: Math.random(),
+      name: req.body.name,
+      job: req.body.job
+    }
+    try {
+      addUser(userToAdd);
+      res.status(201).send(userToAdd);
+    }
+    catch(error) {
+      res.status(500).send();
+    }
+});
+
+app.delete("/users/:id", (req, res) => {
+  const id = req.params.id; 
+  const index = users.users_list.findIndex(user => user.id === id);
+  if (index !== -1) {
+    users.users_list.splice(index, 1);
+    res.status(204).send();
+  } else {
+    res.status(404).send("User not found.");
+  }
 });
